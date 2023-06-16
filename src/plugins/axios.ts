@@ -6,7 +6,7 @@ import axios from "axios";
 // import { toast } from "vue3-toastify";
 
 const axiosIns = axios.create({
-  baseURL: "",
+  baseURL: "url",
   timeout: 20000,
 
   headers: { Accept: "application/json" },

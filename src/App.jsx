@@ -6,8 +6,8 @@ import AppRoutes from "./Routes/Routes";
 import { ROUTES } from "./utils/routes";
 
 // components
-import Navbar from "./common/Navigations/Navbar";
-import Sidebar from "./common/Navigations/Sidebar";
+import Navbar from "./common/Navbar";
+import Sidebar from "./common/Sidebar";
 
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";

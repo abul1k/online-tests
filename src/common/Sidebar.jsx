@@ -2,7 +2,7 @@ import React from "react";
 import { TbLetterQ } from "react-icons/tb";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import { ROUTES } from "../../utils/routes";
+import { ROUTES } from "../utils/routes";
 
 const Sidebar = () => {
   return (

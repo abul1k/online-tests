@@ -6,11 +6,12 @@ import { FaUserAlt } from "react-icons/fa";
 import { MdArrowBack, MdOutlineLogout } from "react-icons/md";
 
 // routes
-import { Link, useLocation } from "react-router-dom";
-import { ROUTES } from "../../utils/routes";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ROUTES } from "../utils/routes";
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
@@ -18,10 +19,13 @@ const Navbar = () => {
         <div>
           {pathname !== "/main" ? (
             <div className="flex items-center gap-5">
-              <Link to={ROUTES.MAIN}>
+              <button
+                className="hover:bg-slate-100 rounded-full p-2 duration-300"
+                onClick={() => navigate(-1)}
+              >
                 <MdArrowBack size="20" />
-              </Link>
-              <h1 className="text-lg">Create Test</h1>
+              </button>
+              <h1 className="text-lg">Go Back</h1>
             </div>
           ) : (
             <Link
