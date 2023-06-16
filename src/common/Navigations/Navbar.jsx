@@ -3,7 +3,7 @@ import React from "react";
 // icons
 import { BsBell } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
-import { MdArrowBack } from "react-icons/md";
+import { MdArrowBack, MdOutlineLogout } from "react-icons/md";
 
 // routes
 import { Link, useLocation } from "react-router-dom";
@@ -37,9 +37,22 @@ const Navbar = () => {
           <button className="text-primary">
             <BsBell size="20" />
           </button>
-          <button className="text-primary">
-            <FaUserAlt size="22" />
-          </button>
+          <div className="user-block">
+            <button className="text-primary">
+              <FaUserAlt size="22" />
+            </button>
+            <div className="tooltip">
+              <div className="shadow-md bg-white py-2 w-full rounded">
+                <Link
+                  to={ROUTES.SINGIN}
+                  className="px-3 py-2 hover:bg-primary/10 hover:text-primary flex justify-between items-center w-full"
+                >
+                  <span>Logout</span>
+                  <MdOutlineLogout />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
