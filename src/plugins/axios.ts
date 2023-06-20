@@ -1,12 +1,8 @@
-import { getAccessToken, logout } from "../auth/jwtService";
+import { getAccessToken } from "../auth/jwtService";
 import axios from "axios";
-// import { useRoute } from "vue-router";
-// const route = useRoute()
-
-// import { toast } from "vue3-toastify";
 
 const axiosIns = axios.create({
-  baseURL: "url",
+  baseURL: "http://192.168.31.82:8000/",
   timeout: 20000,
 
   headers: { Accept: "application/json" },
@@ -25,29 +21,5 @@ axiosIns.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-//404 or 401 pages use this response
-// axiosIns.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     // TODO надо исправит refresh токен
-//     if (error.response && error.response.status === 401 && route.meta.layout !== 'LoginLayout') {
-//       logout();
-//     } else if (error.response.status === 422) {
-//       // toast.error("error");
-//       if (
-//         error.response &&
-//         error.response.data &&
-//         error.response.data.message
-//       ) {
-//         // toast.error(error.response.data.message);
-//       }
-//     } else if (error.response.status === 500) {
-//       // toast.error("Error from server!");
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
 
 export default axiosIns;

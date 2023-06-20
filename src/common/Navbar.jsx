@@ -14,7 +14,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
+    <nav className="fixed top-0 w-full z-10 bg-secondary text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
         <div>
           {pathname !== "/main" ? (

@@ -1,2 +1,2 @@
 // base url
-export const BASE_URL = "https://api.escuelajs.co/api/v1";
+export const BASE_URL = "http://192.168.31.82:8000";
