@@ -24,7 +24,7 @@ const ModuleTest = () => {
           to={ROUTES.CREATEMODULETEST}
           className="btn-primary mt-3 inline-block"
         >
-          Create Module Test
+          Create Test
         </Link>
       </div>
       <div class="flex flex-col mt-3">
