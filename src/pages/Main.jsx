@@ -18,8 +18,8 @@ const Main = () => {
     { name: "Incorrect", value: 4 },
   ];
 
-  const COLORS = ["#59a831", "#ea5455"];
-  const COLORS2 = ["#59a831", "#dce9d5"];
+  const COLORS = ["#1d89e4", "#ffcf00"];
+  const COLORS2 = ["#1d89e4", "#ffcf00"];
 
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
@@ -78,7 +78,7 @@ const Main = () => {
             self-assessments created by teaching experts.
           </p>
           <Link
-            to={ROUTES.MAIN}
+            to={ROUTES.CUSTOMTEST}
             className="btn-primary font-semibold btn-small block w-fit"
           >
             PREPARE FOR YOUR EXAM
@@ -115,11 +115,11 @@ const Main = () => {
               <ul>
                 <li className="flex items-center gap-3 ">
                   <GiPlainCircle className="mt-1 text-primary" size="20" />
-                  <span> Correct: 20% (1)</span>
+                  <span> Correct: 67%</span>
                 </li>
                 <li className="flex items-center gap-3 mt-2">
-                  <GiPlainCircle className="mt-1 text-danger" size="20" />
-                  <span> Incorrect: 80% (4)</span>
+                  <GiPlainCircle className="mt-1 text-yellow" size="20" />
+                  <span> Incorrect: 33% </span>
                 </li>
               </ul>
             </div>
@@ -145,7 +145,7 @@ const Main = () => {
                   <span>Your accuracy: 20%</span>
                 </li>
                 <li className="flex items-center gap-3 mt-2">
-                  <GiPlainCircle className="mt-1 text-primary/20" size="20" />
+                  <GiPlainCircle className="mt-1 text-yellow" size="20" />
                   <span>Peers accuracy: 50%</span>
                 </li>
               </ul>

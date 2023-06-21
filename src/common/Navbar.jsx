@@ -1,4 +1,5 @@
 import React from "react";
+import LOGO from "../images/logo.png";
 
 // icons
 import { BsBell } from "react-icons/bs";
@@ -17,24 +18,19 @@ const Navbar = () => {
     <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
         <div>
-          {pathname !== "/main" ? (
-            <div className="flex items-center gap-5">
-              <button
-                className="hover:bg-slate-100 rounded-full p-2 duration-300"
-                onClick={() => navigate(-1)}
-              >
-                <MdArrowBack size="20" />
-              </button>
-              <h1 className="text-lg">Go Back</h1>
+          <Link
+            className="text-primary text-lg font-semibold uppercase"
+            to={ROUTES.MAIN}
+          >
+            {/* Brand */}
+            <div className="relative w-[280px] h-[40px]">
+              <img
+                className="absolute -top-[110px] -left-[50px] scale-75"
+                src={LOGO}
+                alt=""
+              />
             </div>
-          ) : (
-            <Link
-              className="text-primary text-lg font-semibold uppercase"
-              to={ROUTES.MAIN}
-            >
-              Brand
-            </Link>
-          )}
+          </Link>
         </div>
         <div className="flex items-center gap-7">
           <button className="btn-primary">Prising</button>

@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#59a831", //#1d89e4
+        primary: "#1d89e4", //#1d89e4
         secondary: "#82868b", //#ffcf00
         success: "#28CD41",
         danger: "#ea5455",
@@ -14,6 +14,7 @@ module.exports = {
         dark: "#2D2D2D",
         darkLayoutStorm: "#283046",
         darkLayoutMain: "#171D32",
+        yellow: "#ffcf00"
       },
       boxShadow: {
         badgeShadow: "0 0 10px",

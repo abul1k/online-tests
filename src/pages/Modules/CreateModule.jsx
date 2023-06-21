@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { createModule } from "../features/modules/moduleSlice";
+import { createModule } from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CreateModule = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [moduleName, setModuleName] = useState("");
   const [moduleUniqueName, setModuleUniqueName] = useState("");
+
+  const saveData = () => {
+    dispatch(createModule({ name: moduleName, unique_name: moduleUniqueName }));
+    navigate("/module");
+  };
 
   return (
     <div className="card">
@@ -36,14 +43,7 @@ const CreateModule = () => {
       </form>
 
       <div className="flex justify-end mt-10 mb-5">
-        <button
-          className="btn-primary"
-          onClick={() =>
-            dispatch(
-              createModule({ name: moduleName, unique_name: moduleUniqueName })
-            )
-          }
-        >
+        <button className="btn-primary" onClick={saveData}>
           Save
         </button>
       </div>

@@ -8,14 +8,22 @@ import {
   IoIosRemoveCircleOutline,
   IoIosAddCircleOutline,
 } from "react-icons/io";
-import { getModules } from "../features/modules/moduleSlice";
+import { createTest, getModules } from "../../features/modules/moduleSlice";
+import { useNavigate } from "react-router-dom";
 
 const CreateModuleTest = () => {
+  const navigate = useNavigate();
+
   const { moduleList } = useSelector(({ module }) => module);
 
   const dispatch = useDispatch();
   const editor = useRef(null);
+  const correctAnswerRef = useRef(null);
   const [content, setContent] = useState("");
+
+  // correct answer
+  const [correctAnswer, setCorrectAnswer] = useState("");
+  // const [correctAnswer, setInputValue] = useState("");
 
   const [formData, setFormData] = useState([{ key: "", answer: "" }]);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -48,6 +56,11 @@ const CreateModuleTest = () => {
     { value: "a", label: "A" },
     { value: "b", label: "B" },
     { value: "c", label: "C" },
+    { value: "d", label: "D" },
+    { value: "e", label: "E" },
+    { value: "f", label: "F" },
+    { value: "g", label: "G" },
+    { value: "h", label: "H" },
   ];
 
   const [data, setData] = useState({
@@ -59,16 +72,13 @@ const CreateModuleTest = () => {
   });
 
   const saveDatas = () => {
-    data.question = content;
     const newFormData = [...formData];
-    // newFormData[index] = { key: selectValue, answer: inputValue };
     setFormData(newFormData);
     data.options = formData;
-    setSelectedOption("");
-    setInputValue("");
-
-    console.log(formData);
-    console.log(data);
+    data.question = content;
+    data.correct_answer = correctAnswer;
+    dispatch(createTest(data));
+    navigate("/module-test");
   };
 
   useEffect(() => {
@@ -95,9 +105,7 @@ const CreateModuleTest = () => {
                 <Select
                   placeholder=""
                   options={variants}
-                  value={variants.find(
-                    (option) => option.value === data.key
-                  )}
+                  value={variants.find((option) => option.value === data.key)}
                   onChange={(selectedOption) =>
                     handleSelectChange(selectedOption, index)
                   }
@@ -142,6 +150,34 @@ const CreateModuleTest = () => {
               setContent(newContent);
             }}
           />
+        </div>
+      </div>
+
+      <hr />
+      <div className="mt-5">
+        <h1>Correct answer</h1>
+        <div className="mt-10 flex gap-5">
+          <label className="w-1/12">
+            Key
+            <Select
+              placeholder=""
+              options={variants}
+              onChange={(e) =>
+                setData({ ...data, correct_answer_key: e.value })
+              }
+            />
+          </label>
+
+          <label className="w-11/12">
+            Answer
+            <JoditEditor
+              ref={correctAnswerRef}
+              value={correctAnswer}
+              onChange={(newContent) => {
+                setCorrectAnswer(newContent);
+              }}
+            />
+          </label>
         </div>
       </div>
 

@@ -20,19 +20,19 @@ const Sidebar = () => {
             </NavLink>
             <NavLink
               activeclassname="active"
-              to={ROUTES.CREATEMODULE}
+              to={ROUTES.MODULE}
               className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
             >
               <MdOutlineCreateNewFolder className="mt-1" size="20" />
-              <span>Create Modul</span>
+              <span>Modul</span>
             </NavLink>
             <NavLink
               activeclassname="active"
-              to={ROUTES.CREATEMODULETEST}
+              to={ROUTES.MODULETEST}
               className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
             >
               <MdOutlineCreateNewFolder className="mt-1" size="20" />
-              <span>Create Test</span>
+              <span>Test</span>
             </NavLink>
           </li>
         </ul>
