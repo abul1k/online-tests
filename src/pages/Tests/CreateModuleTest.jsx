@@ -14,7 +14,6 @@ import {
   getTests,
 } from "../../features/modules/moduleSlice";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 const CreateModuleTest = () => {
   const navigate = useNavigate();
