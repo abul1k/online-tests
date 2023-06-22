@@ -12,6 +12,9 @@ import Sidebar from "./common/Sidebar";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
 
+// toast
+import { ToastContainer } from "react-toastify";
+
 const App = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -46,6 +49,14 @@ const App = () => {
           <Route path={ROUTES.SINGUP} element={<SignUp />} />
         </Routes>
       )}
+
+      {/* taost */}
+      <ToastContainer
+        autoClose={2000}
+        hideProgressBar={true}
+        theme="colored"
+        position="top-right"
+      />
     </div>
   );
 };

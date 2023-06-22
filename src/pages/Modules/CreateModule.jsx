@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createModule } from "../../features/modules/moduleSlice";
+import { createModule, getModules } from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -11,8 +11,12 @@ const CreateModule = () => {
   const [moduleUniqueName, setModuleUniqueName] = useState("");
 
   const saveData = () => {
-    dispatch(createModule({ name: moduleName, unique_name: moduleUniqueName }));
-    navigate("/module");
+    dispatch(
+      createModule({ name: moduleName, unique_name: moduleUniqueName })
+    ).then(() => {
+      dispatch(getModules());
+      navigate("/module");
+    });
   };
 
   return (

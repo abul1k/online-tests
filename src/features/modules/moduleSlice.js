@@ -1,15 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
+import { toast } from "react-toastify";
 
 export const createModule = createAsyncThunk(
   "modules/createModule",
   async (payload, thunkAPI) => {
     try {
       const res = await axios.post(`${BASE_URL}/test/modul/`, payload);
+      toast.success("successfully created");
       return res.data;
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -22,7 +24,7 @@ export const getModules = createAsyncThunk(
       const res = await axios.get(`${BASE_URL}/test/modul/`);
       return res.data;
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -33,9 +35,10 @@ export const createTest = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await axios.post(`${BASE_URL}/test/create_test/`, payload);
+      toast.success("successfully created");
       return res.data;
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -48,7 +51,7 @@ export const getTests = createAsyncThunk(
       const res = await axios.get(`${BASE_URL}/test/create_test/`);
       return res.data;
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
       return thunkAPI.rejectWithValue(err);
     }
   }

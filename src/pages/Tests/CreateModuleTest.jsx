@@ -8,8 +8,13 @@ import {
   IoIosRemoveCircleOutline,
   IoIosAddCircleOutline,
 } from "react-icons/io";
-import { createTest, getModules } from "../../features/modules/moduleSlice";
+import {
+  createTest,
+  getModules,
+  getTests,
+} from "../../features/modules/moduleSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateModuleTest = () => {
   const navigate = useNavigate();
@@ -23,22 +28,18 @@ const CreateModuleTest = () => {
 
   // correct answer
   const [correctAnswer, setCorrectAnswer] = useState("");
-  // const [correctAnswer, setInputValue] = useState("");
 
   const [formData, setFormData] = useState([{ key: "", answer: "" }]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [inputValue, setInputValue] = useState("");
 
   const handleSelectChange = (selectedOption, index) => {
     const newFormData = [...formData];
     newFormData[index].key = selectedOption.value;
     setFormData(newFormData);
-    setSelectedOption(selectedOption);
   };
 
-  const handleInputChange = (event, index) => {
+  const handleInputChange = ({ target: { value } }, index) => {
     const newFormData = [...formData];
-    newFormData[index].answer = event.target.value;
+    newFormData[index].answer = value;
     setFormData(newFormData);
   };
 
@@ -50,6 +51,10 @@ const CreateModuleTest = () => {
     const newFormData = [...formData];
     newFormData.splice(index, 1);
     setFormData(newFormData);
+  };
+
+  const uploadImage = ({ target: { files } }) => {
+    setData({ ...data, image: files[0] });
   };
 
   const variants = [
@@ -69,6 +74,7 @@ const CreateModuleTest = () => {
     correct_answer: "",
     correct_answer_key: "",
     options: [],
+    image: null,
   });
 
   const saveDatas = () => {
@@ -77,8 +83,21 @@ const CreateModuleTest = () => {
     data.options = formData;
     data.question = content;
     data.correct_answer = correctAnswer;
-    dispatch(createTest(data));
-    navigate("/module-test");
+
+    // form data
+    const formDataToSend = new FormData();
+    formDataToSend.append("modul_id", data.modul_id);
+    formDataToSend.append("question", data.question);
+    formDataToSend.append("correct_answer", data.correct_answer);
+    formDataToSend.append("correct_answer_key", data.correct_answer_key);
+    formDataToSend.append("options", data.options);
+    formDataToSend.append("image", data.image);
+
+    dispatch(createTest(formDataToSend)).then(() => {
+      dispatch(getTests());
+      navigate("/module-test");
+    });
+
   };
 
   useEffect(() => {
@@ -157,16 +176,28 @@ const CreateModuleTest = () => {
       <div className="mt-5">
         <h1>Correct answer</h1>
         <div className="mt-10 flex gap-5">
-          <label className="w-1/12">
-            Key
-            <Select
-              placeholder=""
-              options={variants}
-              onChange={(e) =>
-                setData({ ...data, correct_answer_key: e.value })
-              }
+          <div>
+            <label className="w-1/12">
+              Key
+              <Select
+                placeholder=""
+                options={variants}
+                onChange={(e) =>
+                  setData({ ...data, correct_answer_key: e.value })
+                }
+              />
+            </label>
+
+            <label htmlFor="fileUpload" className="mt-3 inline-block">
+              Image
+            </label>
+            <input
+              id="fileUpload"
+              type="file"
+              className="form-file-input"
+              onChange={uploadImage}
             />
-          </label>
+          </div>
 
           <label className="w-11/12">
             Answer
