@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
 
 export const createModule = createAsyncThunk(
   "modules/createModule",
