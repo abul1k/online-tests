@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
 
@@ -8,10 +8,21 @@ import { getTests } from "../../features/modules/moduleSlice";
 
 // icon
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import DeleteModal from "./DeleteModal";
 
 const ModuleTest = () => {
   const dispatch = useDispatch();
   const { testList } = useSelector(({ module }) => module);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [testToDelete, setTestToDelete] = useState(null);
+
+  const handleDeleteModal = (id) => {
+    setIsModalOpen(true);
+    setTestToDelete(id);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     dispatch(getTests());
@@ -91,7 +102,10 @@ const ModuleTest = () => {
                           <AiFillEdit />
                         </button>
 
-                        <button className="btn-danger btn-sm ml-3">
+                        <button
+                          className="btn-danger btn-sm ml-3"
+                          onClick={() => handleDeleteModal(item.id)}
+                        >
                           <AiFillDelete />
                         </button>
                       </td>
@@ -103,6 +117,11 @@ const ModuleTest = () => {
           </div>
         </div>
       </div>
+      <DeleteModal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        testId={testToDelete}
+      />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 export const createModule = createAsyncThunk(
   "modules/createModule",
@@ -48,7 +49,24 @@ export const getTests = createAsyncThunk(
   "modules/getTests",
   async (_, thunkAPI) => {
     try {
+      console.log("get test");
       const res = await axios.get(`${BASE_URL}/test/create_test/`);
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const deleteTest = createAsyncThunk(
+  "modules/deleteTest",
+  async (id, thunkAPI) => {
+    // const dispatch = useDispatch();
+    try {
+      const res = await axios.delete(`${BASE_URL}/test/create_test/${id}`);
+      toast.success("successfully deleted");
+      // dispatch(getTests());
       return res.data;
     } catch (err) {
       toast.error(err.message);

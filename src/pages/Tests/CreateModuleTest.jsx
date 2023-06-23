@@ -29,6 +29,7 @@ const CreateModuleTest = () => {
   const [correctAnswer, setCorrectAnswer] = useState("");
 
   const [formData, setFormData] = useState([{ key: "", answer: "" }]);
+  const [showRequired, setShowRequired] = useState(false);
 
   const handleSelectChange = (selectedOption, index) => {
     const newFormData = [...formData];
@@ -76,27 +77,31 @@ const CreateModuleTest = () => {
     image: null,
   });
 
-  const saveDatas = () => {
-    const newFormData = [...formData];
-    setFormData(newFormData);
-    data.options = formData;
-    data.question = content;
-    data.correct_answer = correctAnswer;
+  const saveDatas = (e) => {
+    e.preventDefault();
+    if (content && correctAnswer) {
+      const newFormData = [...formData];
+      setFormData(newFormData);
+      data.options = formData;
+      data.question = content;
+      data.correct_answer = correctAnswer;
 
-    // form data
-    const formDataToSend = new FormData();
-    formDataToSend.append("modul_id", data.modul_id);
-    formDataToSend.append("question", data.question);
-    formDataToSend.append("correct_answer", data.correct_answer);
-    formDataToSend.append("correct_answer_key", data.correct_answer_key);
-    formDataToSend.append("options", data.options);
-    formDataToSend.append("image", data.image);
+      // form data
+      const formDataToSend = new FormData();
+      formDataToSend.append("modul_id", data.modul_id);
+      formDataToSend.append("question", data.question);
+      formDataToSend.append("correct_answer", data.correct_answer);
+      formDataToSend.append("correct_answer_key", data.correct_answer_key);
+      formDataToSend.append("options", JSON.stringify(data.options));
+      formDataToSend.append("image", data.image);
 
-    dispatch(createTest(formDataToSend)).then(() => {
-      dispatch(getTests());
-      navigate("/module-test");
-    });
-
+      dispatch(createTest(formDataToSend)).then(() => {
+        navigate("/module-test");
+      });
+      setShowRequired(false);
+    } else {
+      setShowRequired(true);
+    }
   };
 
   useEffect(() => {
@@ -104,12 +109,13 @@ const CreateModuleTest = () => {
   }, [dispatch]);
 
   return (
-    <div className="card">
+    <form onSubmit={saveDatas} className="card">
       <div className="my-5 flex items-start gap-5">
         <div className="w-1/2">
           <div>
             <label htmlFor="moduleName">Select Modul</label>
             <Select
+              required
               options={moduleList}
               getOptionLabel={(modul) => modul.name}
               getOptionValue={(modul) => modul.id}
@@ -121,6 +127,7 @@ const CreateModuleTest = () => {
               <label className="w-2/12">
                 Key
                 <Select
+                  required
                   placeholder=""
                   options={variants}
                   value={variants.find((option) => option.value === data.key)}
@@ -132,6 +139,7 @@ const CreateModuleTest = () => {
               <label className="w-9/12">
                 Answer
                 <input
+                  required
                   type="text"
                   className="form-input"
                   value={section.answer}
@@ -161,6 +169,7 @@ const CreateModuleTest = () => {
         <div className="w-1/2">
           <label htmlFor="testQuestion">Test question</label>
           <JoditEditor
+            required
             className="mt-1"
             ref={editor}
             value={content}
@@ -168,6 +177,10 @@ const CreateModuleTest = () => {
               setContent(newContent);
             }}
           />
+
+          <p className="text-danger">
+            {showRequired && !content ? "required field" : ""}
+          </p>
         </div>
       </div>
 
@@ -179,6 +192,7 @@ const CreateModuleTest = () => {
             <label className="w-1/12">
               Key
               <Select
+                required
                 placeholder=""
                 options={variants}
                 onChange={(e) =>
@@ -201,22 +215,26 @@ const CreateModuleTest = () => {
           <label className="w-11/12">
             Answer
             <JoditEditor
+              required
               ref={correctAnswerRef}
               value={correctAnswer}
               onChange={(newContent) => {
                 setCorrectAnswer(newContent);
               }}
             />
+            <p className="text-danger">
+              {showRequired && !correctAnswer ? "required field" : ""}
+            </p>
           </label>
         </div>
       </div>
 
       <div className="flex justify-end mt-10 mb-5">
-        <button className="btn-primary" onClick={saveDatas}>
+        <button type="submit" className="btn-primary">
           Save
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
