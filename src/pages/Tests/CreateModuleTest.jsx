@@ -8,11 +8,7 @@ import {
   IoIosRemoveCircleOutline,
   IoIosAddCircleOutline,
 } from "react-icons/io";
-import {
-  createTest,
-  getModules,
-  getTests,
-} from "../../features/modules/moduleSlice";
+import { createTest, getModules } from "../../features/modules/moduleSlice";
 import { useNavigate } from "react-router-dom";
 
 const CreateModuleTest = () => {
