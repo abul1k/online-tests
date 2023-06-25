@@ -3,9 +3,9 @@ export const ROUTES = {
   SINGIN: "/sign-in",
   SINGUP: "/sign-up",
   MODULE: "/module",
-  CREATEMODULE: "/create-module",
+  CREATEMODULE: "/create-module/:id",
   MODULETEST: "/module-test",
-  CREATEMODULETEST: "/create-module-test",
+  CREATEMODULETEST: "/create-module-test/:id",
   CUSTOMTEST: "/create-custom-test",
   NOTFOUND: "*",
 };

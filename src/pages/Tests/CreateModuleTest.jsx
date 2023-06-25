@@ -1,58 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
 import Select from "react-select";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   IoIosRemoveCircleOutline,
   IoIosAddCircleOutline,
 } from "react-icons/io";
-import { createTest, getModules } from "../../features/modules/moduleSlice";
-import { useNavigate } from "react-router-dom";
+import {
+  createTest,
+  getModules,
+  getTestById,
+  updateTest,
+} from "../../features/modules/moduleSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const CreateModuleTest = () => {
+  // router
   const navigate = useNavigate();
+  const { id } = useParams();
 
+  // store
   const { moduleList } = useSelector(({ module }) => module);
-
   const dispatch = useDispatch();
+
+  // joditEditor
   const editor = useRef(null);
   const correctAnswerRef = useRef(null);
-  const [content, setContent] = useState("");
 
-  // correct answer
-  const [correctAnswer, setCorrectAnswer] = useState("");
-
-  const [formData, setFormData] = useState([{ key: "", answer: "" }]);
-  const [showRequired, setShowRequired] = useState(false);
-
-  const handleSelectChange = (selectedOption, index) => {
-    const newFormData = [...formData];
-    newFormData[index].key = selectedOption.value;
-    setFormData(newFormData);
-  };
-
-  const handleInputChange = ({ target: { value } }, index) => {
-    const newFormData = [...formData];
-    newFormData[index].answer = value;
-    setFormData(newFormData);
-  };
-
-  const handleAddForm = () => {
-    setFormData([...formData, { key: "", answer: "" }]);
-  };
-
-  const handleDeleteForm = (index) => {
-    const newFormData = [...formData];
-    newFormData.splice(index, 1);
-    setFormData(newFormData);
-  };
-
-  const uploadImage = ({ target: { files } }) => {
-    setData({ ...data, image: files[0] });
-  };
-
+  // variables
   const variants = [
     { value: "a", label: "A" },
     { value: "b", label: "B" },
@@ -65,44 +42,142 @@ const CreateModuleTest = () => {
   ];
 
   const [data, setData] = useState({
+    id: null,
     modul_id: null,
+    image: null,
     question: "",
     correct_answer: "",
     correct_answer_key: "",
-    options: [],
-    image: null,
+    options: [{ key: "", answer: "" }],
+    modul_name: "",
+    modul_unique_name: "",
   });
 
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [imageName, setImageName] = useState(true);
+  const [showRequired, setShowRequired] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // add/delete variants
+  const handleSelectChange = (selectedOption, index) => {
+    const newFormData = JSON.parse(JSON.stringify(data.options));
+    newFormData[index].key = selectedOption.value;
+    setData({ ...data, options: newFormData });
+  };
+
+  const handleInputChange = ({ target: { value } }, index) => {
+    const newFormData = JSON.parse(JSON.stringify(data.options));
+    newFormData[index].answer = value;
+    setData({ ...data, options: newFormData });
+  };
+
+  const handleAddForm = () => {
+    setData({ ...data, options: [...data.options, { key: "", answer: "" }] });
+  };
+
+  const handleDeleteForm = (index) => {
+    const newFormData = [...data.options];
+    newFormData.splice(index, 1);
+    setData({ ...data, options: newFormData });
+  };
+
+  // image upload
+  const uploadImage = ({ target: { files } }) => {
+    setIsUploaded(true);
+    setData({ ...data, image: files[0] });
+  };
+
+  // api
   const saveDatas = (e) => {
     e.preventDefault();
-    if (content && correctAnswer) {
-      const newFormData = [...formData];
-      setFormData(newFormData);
-      data.options = formData;
-      data.question = content;
-      data.correct_answer = correctAnswer;
+    const optionKeys = data.options
+      .map((item) => item.key !== "")
+      .every((key) => key === true);
 
-      // form data
-      const formDataToSend = new FormData();
-      formDataToSend.append("modul_id", data.modul_id);
-      formDataToSend.append("question", data.question);
-      formDataToSend.append("correct_answer", data.correct_answer);
-      formDataToSend.append("correct_answer_key", data.correct_answer_key);
-      formDataToSend.append("options", JSON.stringify(data.options));
-      formDataToSend.append("image", data.image);
+    const optionAnswers = data.options
+      .map((item) => item.answer !== "")
+      .every((answer) => answer === true);
 
-      dispatch(createTest(formDataToSend)).then(() => {
-        navigate("/module-test");
-      });
-      setShowRequired(false);
+    if (
+      data.question &&
+      data.correct_answer &&
+      data.correct_answer_key &&
+      optionKeys &&
+      optionAnswers
+    ) {
+      if (isSubmitted) return;
+      const newFormData = [...data.options];
+      setData({ ...data, options: newFormData });
+
+      const formData = new FormData();
+      formData.append("id", data.id);
+      formData.append("modul_id", data.modul_id);
+      formData.append("question", data.question);
+      formData.append("correct_answer", data.correct_answer);
+      formData.append("correct_answer_key", data.correct_answer_key);
+      formData.append("options", JSON.stringify(data.options));
+      formData.append("image", data.image);
+      if (Number(id)) {
+        dispatch(updateTest(formData)).then(() => {
+          navigate("/module-test");
+        });
+        setShowRequired(false);
+      } else {
+        dispatch(createTest(formData)).then(() => {
+          navigate("/module-test");
+        });
+        setShowRequired(false);
+      }
+      setIsSubmitted(true);
     } else {
       setShowRequired(true);
     }
   };
 
+  const bindItems = (
+    id,
+    options,
+    correct_answer,
+    correct_answer_key,
+    image,
+    modul_id,
+    question,
+    modul_name,
+    modul_unique_name
+  ) => {
+    setData({
+      id,
+      options,
+      correct_answer,
+      correct_answer_key,
+      image,
+      modul_id,
+      question,
+      modul_name,
+      modul_unique_name,
+    });
+  };
+
   useEffect(() => {
+    if (Number(id)) {
+      dispatch(getTestById(Number(id))).then(({ payload }) => {
+        bindItems(
+          payload.id,
+          payload.options,
+          payload.correct_answer,
+          payload.correct_answer_key,
+          payload.image,
+          payload.modul,
+          payload.question,
+          payload.modul_name,
+          payload.modul_unique_name
+        );
+        setImageName(payload.image_name);
+        console.log(payload);
+      });
+    }
     dispatch(getModules());
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     <form onSubmit={saveDatas} className="card">
@@ -111,71 +186,88 @@ const CreateModuleTest = () => {
           <div>
             <label htmlFor="moduleName">Select Modul</label>
             <Select
-              required
               options={moduleList}
               getOptionLabel={(modul) => modul.name}
               getOptionValue={(modul) => modul.id}
               onChange={(e) => setData({ ...data, modul_id: e.id })}
+              placeholder={data.modul_name}
             />
+            <p className="text-danger">
+              {showRequired && !data.modul_id && "required"}
+            </p>
           </div>
-          {formData.map((section, index) => (
-            <div key={index} className="flex items-center gap-5 mt-5">
-              <label className="w-2/12">
-                Key
-                <Select
-                  required
-                  placeholder=""
-                  options={variants}
-                  value={variants.find((option) => option.value === data.key)}
-                  onChange={(selectedOption) =>
-                    handleSelectChange(selectedOption, index)
-                  }
-                />
-              </label>
-              <label className="w-9/12">
-                Answer
-                <input
-                  required
-                  type="text"
-                  className="form-input"
-                  value={section.answer}
-                  onChange={(e) => handleInputChange(e, index)}
-                />
-              </label>
+          {data.options &&
+            data.options.map((section, index) => (
+              <div key={index} className="flex items-center gap-5 mt-5">
+                <label className="w-2/12">
+                  Key
+                  <Select
+                    placeholder=""
+                    options={variants}
+                    value={
+                      variants.find((option) => option.value === data.key) || {
+                        value: section.key,
+                        label: section.key.toUpperCase(),
+                      }
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange(selectedOption, index)
+                    }
+                  />
+                  <p className="text-danger">
+                    {showRequired && !section.key && "required"}
+                  </p>
+                </label>
+                <label className="w-9/12">
+                  Answer
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={section.answer}
+                    onChange={(e) => handleInputChange(e, index)}
+                  />
+                  <p className="text-danger">
+                    {showRequired && !section.answer && "required"}
+                  </p>
+                </label>
 
-              <div className="w-1/12 flex justify-between items-center mt-8">
-                {index === formData.length - 1 && (
-                  <button className="text-primary" onClick={handleAddForm}>
-                    <IoIosAddCircleOutline size="20px" />
-                  </button>
-                )}
-                {formData.length !== 1 && (
-                  <button
-                    className="text-danger"
-                    onClick={() => handleDeleteForm(index)}
-                  >
-                    <IoIosRemoveCircleOutline size="20px" />
-                  </button>
-                )}
+                <div className="w-1/12 flex justify-between items-center mt-8">
+                  {index === data.options.length - 1 && (
+                    <button
+                      type="button"
+                      className="text-primary"
+                      onClick={handleAddForm}
+                    >
+                      <IoIosAddCircleOutline size="20px" />
+                    </button>
+                  )}
+                  {data.options.length !== 1 && (
+                    <button
+                      type="button"
+                      className="text-danger"
+                      onClick={() => handleDeleteForm(index)}
+                    >
+                      <IoIosRemoveCircleOutline size="20px" />
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
 
         <div className="w-1/2">
           <label htmlFor="testQuestion">Test question</label>
           <JoditEditor
-            required
             className="mt-1"
             ref={editor}
-            value={content}
+            value={data.question}
             onChange={(newContent) => {
-              setContent(newContent);
+              setData({ ...data, question: newContent });
             }}
           />
 
           <p className="text-danger">
-            {showRequired && !content ? "required field" : ""}
+            {showRequired && !data.question ? "required field" : ""}
           </p>
         </div>
       </div>
@@ -188,13 +280,21 @@ const CreateModuleTest = () => {
             <label className="w-1/12">
               Key
               <Select
-                required
                 placeholder=""
                 options={variants}
+                value={{
+                  value: data.correct_answer_key,
+                  label: data.correct_answer_key.toUpperCase(),
+                }}
                 onChange={(e) =>
                   setData({ ...data, correct_answer_key: e.value })
                 }
               />
+              <p className="text-danger">
+                {showRequired && !data.correct_answer_key
+                  ? "required field"
+                  : ""}
+              </p>
             </label>
 
             <label htmlFor="fileUpload" className="mt-3 inline-block">
@@ -206,29 +306,43 @@ const CreateModuleTest = () => {
               className="form-file-input"
               onChange={uploadImage}
             />
+
+            <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
+              {isUploaded ? "New image is selected" : imageName}
+            </span>
           </div>
 
           <label className="w-11/12">
             Answer
             <JoditEditor
-              required
               ref={correctAnswerRef}
-              value={correctAnswer}
+              value={data.correct_answer}
               onChange={(newContent) => {
-                setCorrectAnswer(newContent);
+                setData({ ...data, correct_answer: newContent });
               }}
             />
             <p className="text-danger">
-              {showRequired && !correctAnswer ? "required field" : ""}
+              {showRequired && !data.correct_answer ? "required field" : ""}
             </p>
           </label>
         </div>
       </div>
 
       <div className="flex justify-end mt-10 mb-5">
-        <button type="submit" className="btn-primary">
-          Save
-        </button>
+        {isSubmitted ? (
+          <button
+            type="button"
+            disabled
+            className="btn-primary flex gap-3 items-center justify-between"
+          >
+            <AiOutlineLoading3Quarters className="animate-spin" />
+            Processing...
+          </button>
+        ) : (
+          <button type="submit" className="btn-primary">
+            Save
+          </button>
+        )}
       </div>
     </form>
   );

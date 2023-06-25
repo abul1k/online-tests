@@ -17,11 +17,55 @@ export const createModule = createAsyncThunk(
   }
 );
 
+export const updateModule = createAsyncThunk(
+  "modules/updateModule",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await axios.patch(
+        `${BASE_URL}/test/modul/${payload.id}/`,
+        payload
+      );
+      toast.success("successfully updated");
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const getModules = createAsyncThunk(
   "modules/getModules",
   async (_, thunkAPI) => {
     try {
       const res = await axios.get(`${BASE_URL}/test/modul/`);
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const getModuleById = createAsyncThunk(
+  "modules/getModuleById",
+  async (id, thunkAPI) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/test/modul/${id}`);
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const deleteModul = createAsyncThunk(
+  "modules/deleteModul",
+  async (id, thunkAPI) => {
+    try {
+      const res = await axios.delete(`${BASE_URL}/test/modul/${id}`);
+      toast.success("successfully deleted");
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -44,12 +88,41 @@ export const createTest = createAsyncThunk(
   }
 );
 
+export const updateTest = createAsyncThunk(
+  "modules/updateTest",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await axios.patch(
+        `${BASE_URL}/test/create_test/${payload.get("id")}/`,
+        payload
+      );
+      toast.success("successfully updated");
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const getTests = createAsyncThunk(
   "modules/getTests",
   async (_, thunkAPI) => {
     try {
-      console.log("get test");
       const res = await axios.get(`${BASE_URL}/test/create_test/`);
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const getTestById = createAsyncThunk(
+  "modules/getTestById",
+  async (id, thunkAPI) => {
+    try {
+      const res = await axios.get(`${BASE_URL}/test/create_test/${id}/`);
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -61,11 +134,9 @@ export const getTests = createAsyncThunk(
 export const deleteTest = createAsyncThunk(
   "modules/deleteTest",
   async (id, thunkAPI) => {
-    // const dispatch = useDispatch();
     try {
       const res = await axios.delete(`${BASE_URL}/test/create_test/${id}`);
       toast.success("successfully deleted");
-      // dispatch(getTests());
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -78,12 +149,15 @@ const moduleSlice = createSlice({
   name: "module",
   initialState: {
     moduleList: [],
+    modul: {},
     testList: [],
+    test: {},
     isLoading: false,
   },
 
   reducers: {},
   extraReducers: (builder) => {
+    // get modules
     builder.addCase(getModules.pending, (state) => {
       state.isLoading = true;
     });
@@ -95,6 +169,7 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
 
+    // get tests
     builder.addCase(getTests.pending, (state) => {
       state.isLoading = true;
     });
@@ -103,6 +178,30 @@ const moduleSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getTests.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // get test by id
+    builder.addCase(getTestById.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getTestById.fulfilled, (state, { payload }) => {
+      state.test = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getTestById.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // get modul by id
+    builder.addCase(getModuleById.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getModuleById.fulfilled, (state, { payload }) => {
+      state.modul = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(getModuleById.rejected, (state) => {
       state.isLoading = false;
     });
   },

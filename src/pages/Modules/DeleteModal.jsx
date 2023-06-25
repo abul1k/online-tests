@@ -1,17 +1,17 @@
 import React from "react";
-import { deleteTest, getTests } from "../../features/modules/moduleSlice";
+import { deleteModul, getModules } from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const DeleteModal = ({ isModalOpen, testId, closeModal }) => {
+const DeleteModal = ({ isModalOpen, modulId, closeModal }) => {
   const dispatch = useDispatch();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const deleteTestAction = () => {
     if (isSubmitted) return;
-    dispatch(deleteTest(testId)).then(() => {
-      dispatch(getTests());
+    dispatch(deleteModul(modulId)).then(() => {
+      dispatch(getModules());
       closeModal();
       setIsSubmitted(false);
     });

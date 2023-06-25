@@ -97,10 +97,15 @@ const ModuleTest = () => {
                         {item.correct_answer_key}
                       </td>
 
-                      <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                        <button className="btn-warning btn-sm">
-                          <AiFillEdit />
-                        </button>
+                      <td className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                        <Link
+                          className="btn-warning btn-sm inline-block"
+                          to={`/create-module-test/${item.id}`}
+                        >
+                          <span>
+                            <AiFillEdit />
+                          </span>
+                        </Link>
 
                         <button
                           className="btn-danger btn-sm ml-3"

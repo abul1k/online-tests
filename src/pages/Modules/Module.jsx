@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
 
@@ -8,10 +8,21 @@ import { getModules } from "../../features/modules/moduleSlice";
 
 // icon
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import DeleteModal from "./DeleteModal";
 
 const Module = () => {
   const dispatch = useDispatch();
   const { moduleList } = useSelector(({ module }) => module);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ModulToDelete, setModulToDelete] = useState(null);
+
+  const handleDeleteModal = (id) => {
+    setIsModalOpen(true);
+    setModulToDelete(id);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     dispatch(getModules());
@@ -74,12 +85,20 @@ const Module = () => {
                         {item.unique_name}
                       </td>
 
-                      <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                        <button className="btn-warning btn-sm">
-                          <AiFillEdit />
-                        </button>
+                      <td className="flex items-center justify-center px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                      <Link
+                          className="btn-warning btn-sm inline-block"
+                          to={`/create-module/${item.id}`}
+                        >
+                          <span>
+                            <AiFillEdit />
+                          </span>
+                        </Link>
 
-                        <button className="btn-danger btn-sm ml-3">
+                        <button
+                          className="btn-danger btn-sm ml-3"
+                          onClick={() => handleDeleteModal(item.id)}
+                        >
                           <AiFillDelete />
                         </button>
                       </td>
@@ -91,6 +110,12 @@ const Module = () => {
           </div>
         </div>
       </div>
+
+      <DeleteModal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        modulId={ModulToDelete}
+      />
     </div>
   );
 };

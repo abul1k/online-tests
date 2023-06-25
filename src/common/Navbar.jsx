@@ -4,16 +4,13 @@ import LOGO from "../images/logo.png";
 // icons
 import { BsBell } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
-import { MdArrowBack, MdOutlineLogout } from "react-icons/md";
+import { MdOutlineLogout } from "react-icons/md";
 
 // routes
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTES } from "../utils/routes";
 
 const Navbar = () => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-
   return (
     <nav className="fixed top-0 w-full z-10 bg-white text-gray-700 border-b-2 pl-4 py-3 pr-8">
       <div className="flex justify-between items-center">
@@ -22,8 +19,7 @@ const Navbar = () => {
             className="text-primary text-lg font-semibold uppercase"
             to={ROUTES.MAIN}
           >
-            {/* Brand */}
-            <div className="relative w-[280px] h-[40px]">
+            <div className="relative w-[280px] h-[42px] overflow-hidden">
               <img
                 className="absolute -top-[110px] -left-[50px] scale-75"
                 src={LOGO}

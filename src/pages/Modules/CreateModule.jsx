@@ -1,7 +1,13 @@
-import React, { useState } from "react";
-import { createModule, getModules } from "../../features/modules/moduleSlice";
+import React, { useEffect, useState } from "react";
+import {
+  createModule,
+  getModuleById,
+  updateModule,
+} from "../../features/modules/moduleSlice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const CreateModule = () => {
   const dispatch = useDispatch();
@@ -9,22 +15,52 @@ const CreateModule = () => {
 
   const [moduleName, setModuleName] = useState("");
   const [moduleUniqueName, setModuleUniqueName] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { id } = useParams();
 
-  const saveData = () => {
-    dispatch(
-      createModule({ name: moduleName, unique_name: moduleUniqueName })
-    ).then(() => {
-      dispatch(getModules());
-      navigate("/module");
-    });
+  const saveData = (e) => {
+    e.preventDefault();
+    if (isSubmitted) return;
+    if (Number(id)) {
+      dispatch(
+        updateModule({
+          id: Number(id),
+          name: moduleName,
+          unique_name: moduleUniqueName,
+        })
+      ).then(() => {
+        navigate("/module");
+      });
+    } else {
+      dispatch(
+        createModule({ name: moduleName, unique_name: moduleUniqueName })
+      ).then(() => {
+        navigate("/module");
+      });
+    }
+    setIsSubmitted(true);
   };
 
+  const bindItems = (name, unique_name) => {
+    setModuleName(name);
+    setModuleUniqueName(unique_name);
+  };
+
+  useEffect(() => {
+    if (Number(id)) {
+      dispatch(getModuleById(Number(id))).then(({ payload }) => {
+        bindItems(payload.name, payload.unique_name);
+      });
+    }
+  }, [dispatch, id]);
+
   return (
-    <div className="card">
-      <form className="my-5 flex items-center gap-10">
+    <form className="card" onSubmit={saveData}>
+      <div className="my-5 flex items-center gap-10">
         <div className="w-1/2">
           <label htmlFor="moduleName">Modul name</label>
           <input
+            required
             id="moduleName"
             type="text"
             className="form-input"
@@ -36,6 +72,7 @@ const CreateModule = () => {
         <div className="w-1/2">
           <label htmlFor="modulUniqueName">Modul unique name</label>
           <input
+            required
             id="modulUniqueName"
             type="text"
             className="form-input"
@@ -44,14 +81,24 @@ const CreateModule = () => {
             onChange={(e) => setModuleUniqueName(e.target.value)}
           />
         </div>
-      </form>
-
-      <div className="flex justify-end mt-10 mb-5">
-        <button className="btn-primary" onClick={saveData}>
-          Save
-        </button>
       </div>
-    </div>
+      <div className="flex justify-end mt-10 mb-5">
+        {isSubmitted ? (
+          <button
+            type="button"
+            disabled
+            className="btn-primary flex gap-3 items-center justify-between"
+          >
+            <AiOutlineLoading3Quarters className="animate-spin" />
+            Processing...
+          </button>
+        ) : (
+          <button type="submit" className="btn-primary">
+            Save
+          </button>
+        )}
+      </div>
+    </form>
   );
 };
 
