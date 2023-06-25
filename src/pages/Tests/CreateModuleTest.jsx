@@ -54,7 +54,7 @@ const CreateModuleTest = () => {
   });
 
   const [isUploaded, setIsUploaded] = useState(false);
-  const [imageName, setImageName] = useState(true);
+  const [imageName, setImageName] = useState("");
   const [showRequired, setShowRequired] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -83,6 +83,7 @@ const CreateModuleTest = () => {
 
   // image upload
   const uploadImage = ({ target: { files } }) => {
+    setImageName(files[0].name);
     setIsUploaded(true);
     setData({ ...data, image: files[0] });
   };
@@ -173,7 +174,6 @@ const CreateModuleTest = () => {
           payload.modul_unique_name
         );
         setImageName(payload.image_name);
-        console.log(payload);
       });
     }
     dispatch(getModules());
@@ -308,7 +308,7 @@ const CreateModuleTest = () => {
             />
 
             <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
-              {isUploaded ? "New image is selected" : imageName}
+              {isUploaded ? imageName : imageName || "No photo"}
             </span>
           </div>
 
