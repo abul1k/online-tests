@@ -14,6 +14,7 @@ import SignUp from "./pages/Auth/SignUp";
 
 // toast
 import { ToastContainer } from "react-toastify";
+import PastTest from "./pages/PassTest/PastTest";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -26,7 +27,7 @@ const App = () => {
   }, [navigate, pathname]);
 
   const checkRoute = () => {
-    if (pathname === "/sign-up" || pathname === "/sign-in") {
+    if (pathname === "/sign-up" || pathname === "/sign-in" || pathname === "/test") {
       return false;
     } else {
       return true;
@@ -47,6 +48,7 @@ const App = () => {
         <Routes>
           <Route path={ROUTES.SINGIN} element={<SignIn />} />
           <Route path={ROUTES.SINGUP} element={<SignUp />} />
+          <Route path={ROUTES.TEST} element={<PastTest />} />
         </Routes>
       )}
 

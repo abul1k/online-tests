@@ -1,7 +1,10 @@
-
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../utils/routes";
 
 const CreateCustomTest = () => {
+  const navigate = useNavigate();
+
   const [isTutor, setIsTutor] = useState(true);
   const [isTimer, setIsTimer] = useState(false);
 
@@ -57,6 +60,10 @@ const CreateCustomTest = () => {
     });
   };
 
+  const pastTest = () => {
+    console.log(checkedItems, isTutor, isTimer);
+    navigate(ROUTES.TEST);
+  };
   return (
     <div className="card">
       <h1 className="text-xl">Test Mode</h1>
@@ -110,10 +117,7 @@ const CreateCustomTest = () => {
         ))}
       </div>
       <hr />
-      <button
-        className="btn-primary mt-10"
-        onClick={() => console.log(checkedItems, isTutor, isTimer)}
-      >
+      <button className="btn-primary mt-10" onClick={pastTest}>
         Start Test
       </button>
     </div>

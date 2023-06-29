@@ -17,12 +17,8 @@ const AppRoutes = () => {
     <Routes>
       <Route path={ROUTES.MAIN} element={<Main />} />
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
-
-      {/* modul */}
       <Route path={ROUTES.MODULE} element={<Module />} />
       <Route path={ROUTES.CREATEMODULE} element={<CreateModule />} />
-
-      {/* modul test */}
       <Route path={ROUTES.MODULETEST} element={<ModuleTest />} />
       <Route path={ROUTES.CREATEMODULETEST} element={<CreateModuleTest />} />
 
