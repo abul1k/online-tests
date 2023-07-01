@@ -1,69 +1,46 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../utils/routes";
+import { ROUTES } from "../Routes/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { startTest } from "../features/pastTest/pastTestSlice";
+import { useEffect } from "react";
+import { getModules } from "../features/modules/moduleSlice";
 
 const CreateCustomTest = () => {
   const navigate = useNavigate();
 
+  const { moduleList } = useSelector(({ module }) => module);
+  const dispatch = useDispatch();
+
   const [isTutor, setIsTutor] = useState(true);
   const [isTimer, setIsTimer] = useState(false);
 
-  const [checkedItems, setCheckedItems] = useState({});
-
-  const systems = [
-    {
-      label: "Atomic Structure 1",
-      value: "atomicStructure1",
-    },
-    {
-      label: "Atomic Structure 2",
-      value: "atomicStructure2",
-    },
-    {
-      label: "Atomic Structure 3",
-      value: "atomicStructure3",
-    },
-    {
-      label: "Atomic Structure 4",
-      value: "atomicStructure4",
-    },
-    {
-      label: "Atomic Structure 5",
-      value: "atomicStructure5",
-    },
-    {
-      label: "Atomic Structure 6",
-      value: "atomicStructure6",
-    },
-    {
-      label: "Atomic Structure 7",
-      value: "atomicStructure7",
-    },
-    {
-      label: "Atomic Structure 8",
-      value: "atomicStructure8",
-    },
-    {
-      label: "Atomic Structure 9",
-      value: "atomicStructure9",
-    },
-    {
-      label: "Atomic Structure 10",
-      value: "atomicStructure10",
-    },
-  ];
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const handleCheckboxChange = (event) => {
+    const name = event.target.name;
+    const isChecked = event.target.checked;
+
     setCheckedItems({
       ...checkedItems,
-      [event.target.name]: event.target.checked,
+      [name]: isChecked,
     });
   };
 
   const pastTest = () => {
-    console.log(checkedItems, isTutor, isTimer);
-    navigate(ROUTES.TEST);
+    const selectedModules = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key]
+    );
+
+    dispatch(
+      startTest({ modul_ids: selectedModules, timer: isTimer, tutor: isTutor })
+    )
   };
+
+  useEffect(() => {
+    dispatch(getModules());
+  }, [dispatch]);
+
   return (
     <div className="card">
       <h1 className="text-xl">Test Mode</h1>
@@ -102,16 +79,16 @@ const CreateCustomTest = () => {
       <hr />
 
       <div className="flex flex-wrap mt-10 mb-5">
-        {systems.map((checkbox) => (
-          <div className="w-1/2" key={checkbox.value}>
-            <label className="mb-2 block">
+        {moduleList.map((item) => (
+          <div className="w-1/2" key={item.id}>
+            <label className="mb-2 block cursor-pointer">
               <input
                 type="checkbox"
-                name={checkbox.value}
-                checked={checkedItems[checkbox.value] || false}
+                name={item.id}
+                checked={checkedItems[item.id] || false}
                 onChange={handleCheckboxChange}
               />
-              <span className="ml-2">{checkbox.label}</span>
+              <span className="ml-2">{item.name}</span>
             </label>
           </div>
         ))}

@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 
 // components
 import Main from "../pages/Main";
-import { ROUTES } from "../utils/routes";
 import NotFound from "../pages/NotFound";
 import CreateCustomTest from "../pages/CreateCustomTest";
 
@@ -11,6 +10,7 @@ import CreateModule from "../pages/Modules/CreateModule";
 import CreateModuleTest from "../pages/Tests/CreateModuleTest";
 import Module from "../pages/Modules/Module";
 import ModuleTest from "../pages/Tests/ModuleTest";
+import { ROUTES } from "./constants";
 
 const AppRoutes = () => {
   return (

@@ -162,18 +162,21 @@ const CreateModuleTest = () => {
   useEffect(() => {
     if (Number(id)) {
       dispatch(getTestById(Number(id))).then(({ payload }) => {
-        bindItems(
-          payload.id,
-          payload.options,
-          payload.correct_answer,
-          payload.correct_answer_key,
-          payload.image,
-          payload.modul,
-          payload.question,
-          payload.modul_name,
-          payload.modul_unique_name
-        );
-        setImageName(payload.image_name);
+        if (payload && payload.name !== "AxiosError") {
+          // added new checker
+          bindItems(
+            payload.id,
+            payload.options,
+            payload.correct_answer,
+            payload.correct_answer_key,
+            payload.image,
+            payload.modul,
+            payload.question,
+            payload.modul_name,
+            payload.modul_unique_name
+          );
+          setImageName(payload.image_name);
+        }
       });
     }
     dispatch(getModules());

@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { BASE_URL } from "../../utils/constants";
+import $axios from "../../plugins/axios";
 import { toast } from "react-toastify";
 
 export const createModule = createAsyncThunk(
   "modules/createModule",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post(`${BASE_URL}/test/modul/`, payload);
+      const res = await $axios.post(`/test/modul/`, payload);
       toast.success("successfully created");
       return res.data;
     } catch (err) {
@@ -21,10 +20,7 @@ export const updateModule = createAsyncThunk(
   "modules/updateModule",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.patch(
-        `${BASE_URL}/test/modul/${payload.id}/`,
-        payload
-      );
+      const res = await $axios.patch(`/test/modul/${payload.id}/`, payload);
       toast.success("successfully updated");
       return res.data;
     } catch (err) {
@@ -38,7 +34,7 @@ export const getModules = createAsyncThunk(
   "modules/getModules",
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get(`${BASE_URL}/test/modul/`);
+      const res = await $axios.get(`/test/modul/`);
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -51,7 +47,7 @@ export const getModuleById = createAsyncThunk(
   "modules/getModuleById",
   async (id, thunkAPI) => {
     try {
-      const res = await axios.get(`${BASE_URL}/test/modul/${id}`);
+      const res = await $axios.get(`/test/modul/${id}`);
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -64,7 +60,7 @@ export const deleteModul = createAsyncThunk(
   "modules/deleteModul",
   async (id, thunkAPI) => {
     try {
-      const res = await axios.delete(`${BASE_URL}/test/modul/${id}`);
+      const res = await $axios.delete(`/test/modul/${id}`);
       toast.success("successfully deleted");
       return res.data;
     } catch (err) {
@@ -78,7 +74,7 @@ export const createTest = createAsyncThunk(
   "modules/createTest",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post(`${BASE_URL}/test/create_test/`, payload);
+      const res = await $axios.post(`/test/create_test/`, payload);
       toast.success("successfully created");
       return res.data;
     } catch (err) {
@@ -92,8 +88,8 @@ export const updateTest = createAsyncThunk(
   "modules/updateTest",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.patch(
-        `${BASE_URL}/test/create_test/${payload.get("id")}/`,
+      const res = await $axios.patch(
+        `/test/create_test/${payload.get("id")}/`,
         payload
       );
       toast.success("successfully updated");
@@ -109,7 +105,7 @@ export const getTests = createAsyncThunk(
   "modules/getTests",
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get(`${BASE_URL}/test/create_test/`);
+      const res = await $axios.get(`/test/create_test/`);
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -122,7 +118,7 @@ export const getTestById = createAsyncThunk(
   "modules/getTestById",
   async (id, thunkAPI) => {
     try {
-      const res = await axios.get(`${BASE_URL}/test/create_test/${id}/`);
+      const res = await $axios.get(`/test/create_test/${id}/`);
       return res.data;
     } catch (err) {
       toast.error(err.message);
@@ -135,7 +131,7 @@ export const deleteTest = createAsyncThunk(
   "modules/deleteTest",
   async (id, thunkAPI) => {
     try {
-      const res = await axios.delete(`${BASE_URL}/test/create_test/${id}`);
+      const res = await $axios.delete(`/test/create_test/${id}`);
       toast.success("successfully deleted");
       return res.data;
     } catch (err) {

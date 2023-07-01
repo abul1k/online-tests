@@ -8,7 +8,8 @@ import { MdOutlineLogout } from "react-icons/md";
 
 // routes
 import { Link } from "react-router-dom";
-import { ROUTES } from "../utils/routes";
+import { ROUTES } from "../Routes/constants";
+import { logout } from "../auth/jwtService";
 
 const Navbar = () => {
   return (
@@ -30,6 +31,7 @@ const Navbar = () => {
         </div>
         <div className="flex items-center gap-7">
           <button className="btn-primary">Prising</button>
+
           <button className="text-primary">
             <BsBell size="20" />
           </button>
@@ -41,6 +43,7 @@ const Navbar = () => {
               <div className="shadow-md bg-white py-2 w-full rounded">
                 <Link
                   to={ROUTES.SINGIN}
+                  onClick={logout}
                   className="px-3 py-2 hover:bg-primary/10 hover:text-primary flex justify-between items-center w-full"
                 >
                   <span>Logout</span>

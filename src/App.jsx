@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 // Routes
-import AppRoutes from "./Routes/Routes";
-import { ROUTES } from "./utils/routes";
+import AppRoutes from "./Routes/Routes.jsx";
+import { ROUTES } from "./Routes/constants.js";
 
 // components
 import Navbar from "./common/Navbar";
@@ -15,6 +15,7 @@ import SignUp from "./pages/Auth/SignUp";
 // toast
 import { ToastContainer } from "react-toastify";
 import PastTest from "./pages/PassTest/PastTest";
+import { getUserData } from "./auth/jwtService.js";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -27,12 +28,22 @@ const App = () => {
   }, [navigate, pathname]);
 
   const checkRoute = () => {
-    if (pathname === "/sign-up" || pathname === "/sign-in" || pathname === "/test") {
+    if (
+      pathname === "/sign-up" ||
+      pathname === "/sign-in" ||
+      pathname === "/test"
+    ) {
       return false;
     } else {
       return true;
     }
   };
+
+  useEffect(() => {
+    if (!getUserData()) {
+      navigate(ROUTES.SINGIN);
+    }
+  }, [navigate]);
 
   return (
     <div>
@@ -52,7 +63,6 @@ const App = () => {
         </Routes>
       )}
 
-      {/* taost */}
       <ToastContainer
         autoClose={2000}
         hideProgressBar={true}

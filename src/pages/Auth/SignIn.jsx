@@ -1,8 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { ROUTES } from "../../utils/routes";
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTES } from "../../Routes/constants";
+import { login } from "../../auth/jwtService";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
+  const loginUser = (e) => {
+    e.preventDefault();
+    login(user)
+      .then(() => {
+        navigate("/main");
+        setTimeout(() => {
+          toast.success("You have successfully logged in");
+        }, 200);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4">
@@ -13,29 +36,31 @@ const SignIn = () => {
         </div>
 
         <div className="mt-8">
-          <form>
+          <form onSubmit={loginUser}>
             <div>
               <div className="flex justify-between">
                 <label
-                  htmlFor="phone"
+                  htmlFor="username"
                   className="text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Номер телефона
+                  Your username
                 </label>
               </div>
 
               <input
-                v-model="formData.phone"
-                id="phone"
+                id="username"
+                required
                 type="text"
-                name="phone"
-                placeholder="Your phone"
+                name="username"
+                placeholder="Username"
                 className="form-input"
+                value={user.username}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
               />
             </div>
 
-            <div className="mt-6">
-              <div className="flex justify-between">
+            <div>
+              <div className="flex justify-between mt-4">
                 <label
                   htmlFor="password"
                   className="text-sm text-gray-600 dark:text-gray-200"
@@ -45,12 +70,14 @@ const SignIn = () => {
               </div>
 
               <input
-                v-model="formData.password"
                 id="password"
+                required
                 type="password"
                 name="password"
                 placeholder="Your Password"
                 className="form-input"
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
             </div>
 
@@ -70,9 +97,16 @@ const SignIn = () => {
             </div>
 
             <div className="mt-12">
-              <Link to={ROUTES.MAIN} type="submit" className="btn-primary text-center w-full">
+              {/* <Link
+                to={ROUTES.MAIN}
+                type="submit"
+                className="btn-primary text-center w-full"
+              >
                 Авторизоваться
-              </Link>
+              </Link> */}
+              <button type="submit" className="btn-primary text-center w-full">
+                Авторизоваться
+              </button>
             </div>
           </form>
 

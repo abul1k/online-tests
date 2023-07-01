@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ROUTES } from "../../utils/routes";
+import { ROUTES } from "../../Routes/constants";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";

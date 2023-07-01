@@ -10,7 +10,7 @@ import { GiPlainCircle } from "react-icons/gi";
 
 // routes
 import { Link } from "react-router-dom";
-import { ROUTES } from "../utils/routes";
+import { ROUTES } from "../Routes/constants";
 
 const Main = () => {
   const data = [
