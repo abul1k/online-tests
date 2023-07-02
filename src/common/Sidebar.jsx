@@ -19,7 +19,7 @@ const Sidebar = () => {
               <TbLetterQ className="mt-1" size="20" />
               <span>Question Bank</span>
             </NavLink>
-            {getUserData().role === "admin" && (
+            {getUserData() && getUserData().role === "admin" && (
               <>
                 <NavLink
                   activeclassname="active"

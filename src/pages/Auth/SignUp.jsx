@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 const SignUp = () => {
   const navigate = useNavigate();
 
+  const [isAgree, setIsAgree] = useState(false);
+
   const [user, setUser] = useState({
     username: "",
     name: "",
@@ -107,8 +109,9 @@ const SignUp = () => {
               <input
                 id="default-checkbox"
                 type="checkbox"
-                value=""
                 className="w-4 h-4 rounded-md text-blue-600 bg-gray-100 border-gray-200 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                value={isAgree}
+                onChange={(e) => setIsAgree(e.target.checked)}
               />
               <label
                 htmlFor="default-checkbox"
@@ -119,19 +122,23 @@ const SignUp = () => {
             </div>
 
             <div className="mt-12">
-              <button type="submit" className="btn-primary text-center w-full">
+              <button
+                disabled={!isAgree}
+                type="submit"
+                className="btn-primary text-center w-full"
+              >
                 Register
               </button>
-              <p className="text-center my-3 text-sm text-gray-400 dark:text-gray-200">
+
+              <p className="mt-6 text-center text-sm text-gray-400">
                 Are you already registered?
+                <Link
+                  className="ml-1 text-primary hover:underline"
+                  to={ROUTES.SINGIN}
+                >
+                  Login
+                </Link>
               </p>
-              <Link
-                to={ROUTES.SINGIN}
-                type="button"
-                className="btn-outline-primary text-center w-full"
-              >
-                Login
-              </Link>
             </div>
           </form>
         </div>

@@ -18,7 +18,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path={ROUTES.MAIN} element={<Main />} />
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
-      {getUserData().role === "admin" && (
+      {getUserData() && getUserData().role === "admin" && (
         <>
           {" "}
           <Route path={ROUTES.MODULE} element={<Module />} />
