@@ -34,7 +34,9 @@ const CreateCustomTest = () => {
 
     dispatch(
       startTest({ modul_ids: selectedModules, timer: isTimer, tutor: isTutor })
-    )
+    ).then(() => {
+      navigate(ROUTES.TEST);
+    });
   };
 
   useEffect(() => {

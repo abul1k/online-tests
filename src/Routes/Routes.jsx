@@ -11,16 +11,25 @@ import CreateModuleTest from "../pages/Tests/CreateModuleTest";
 import Module from "../pages/Modules/Module";
 import ModuleTest from "../pages/Tests/ModuleTest";
 import { ROUTES } from "./constants";
+import { getUserData } from "../auth/jwtService";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path={ROUTES.MAIN} element={<Main />} />
       <Route path={ROUTES.CUSTOMTEST} element={<CreateCustomTest />} />
-      <Route path={ROUTES.MODULE} element={<Module />} />
-      <Route path={ROUTES.CREATEMODULE} element={<CreateModule />} />
-      <Route path={ROUTES.MODULETEST} element={<ModuleTest />} />
-      <Route path={ROUTES.CREATEMODULETEST} element={<CreateModuleTest />} />
+      {getUserData().role === "admin" && (
+        <>
+          {" "}
+          <Route path={ROUTES.MODULE} element={<Module />} />
+          <Route path={ROUTES.CREATEMODULE} element={<CreateModule />} />
+          <Route path={ROUTES.MODULETEST} element={<ModuleTest />} />
+          <Route
+            path={ROUTES.CREATEMODULETEST}
+            element={<CreateModuleTest />}
+          />
+        </>
+      )}
 
       {/* not found */}
       <Route path={ROUTES.NOTFOUND} element={<NotFound />} />

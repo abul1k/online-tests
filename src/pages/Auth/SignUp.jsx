@@ -31,7 +31,7 @@ const SignUp = () => {
       <div className="w-1/4">
         <div className="text-center">
           <h2 className="text-center text-4xl font-bold text-gray-700 dark:text-white">
-            Зарегистрироваться
+            Register
           </h2>
         </div>
 
@@ -87,7 +87,7 @@ const SignUp = () => {
                   htmlFor="password"
                   className="text-sm text-gray-600 dark:text-gray-200"
                 >
-                  Пароль
+                  Your Password
                 </label>
               </div>
 
@@ -114,38 +114,26 @@ const SignUp = () => {
                 htmlFor="default-checkbox"
                 className="ml-2 text-sm text-gray-400 dark:text-gray-200"
               >
-                Я принимаю Условия а также Заявление о конфиденциальности
-                данных.
+                I accept the Terms and the Data Privacy Statement.
               </label>
             </div>
 
             <div className="mt-12">
-              {/* <Link
-                to={ROUTES.MAIN}
-                type="submit"
-                className="btn-primary text-center w-full"
-              >
-                Зарегистрироваться
-              </Link> */}
               <button type="submit" className="btn-primary text-center w-full">
-                Зарегистрироваться
+                Register
               </button>
               <p className="text-center my-3 text-sm text-gray-400 dark:text-gray-200">
-                Вы уже зарегистрированы?
+                Are you already registered?
               </p>
               <Link
                 to={ROUTES.SINGIN}
                 type="button"
                 className="btn-outline-primary text-center w-full"
               >
-                Авторизоваться {/* Логин */}
+                Login
               </Link>
             </div>
           </form>
-
-          {/* <p className="mt-6 text-center text-sm text-gray-400 underline hover:text-blue-500 cursor-pointer">
-            Забыли пароль?
-          </p> */}
         </div>
       </div>
     </div>

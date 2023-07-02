@@ -9,7 +9,7 @@ import { MdOutlineLogout } from "react-icons/md";
 // routes
 import { Link } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
-import { logout } from "../auth/jwtService";
+import { getUserData, logout } from "../auth/jwtService";
 
 const Navbar = () => {
   return (
@@ -35,7 +35,17 @@ const Navbar = () => {
           <button className="text-primary">
             <BsBell size="20" />
           </button>
-          <div className="user-block">
+          <div className="user-block flex">
+            {getUserData() && (
+              <p className="text-end mr-2">
+                <span className="block text-xs font-medium text-gray-500 -mb-1">
+                  @{getUserData().username}
+                </span>{" "}
+                <span className="block text-sm font-medium">
+                  {getUserData().name}
+                </span>
+              </p>
+            )}
             <button className="text-primary">
               <FaUserAlt size="22" />
             </button>

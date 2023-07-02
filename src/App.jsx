@@ -16,6 +16,7 @@ import SignUp from "./pages/Auth/SignUp";
 import { ToastContainer } from "react-toastify";
 import PastTest from "./pages/PassTest/PastTest";
 import { getUserData } from "./auth/jwtService.js";
+import Results from "./pages/PassTest/Results.jsx";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -31,7 +32,8 @@ const App = () => {
     if (
       pathname === "/sign-up" ||
       pathname === "/sign-in" ||
-      pathname === "/test"
+      pathname === "/test" ||
+      pathname === "/test-results"
     ) {
       return false;
     } else {
@@ -40,10 +42,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (!getUserData()) {
+    if (!getUserData() && pathname !== "/sign-up") {
       navigate(ROUTES.SINGIN);
     }
-  }, [navigate]);
+  }, [navigate, pathname]);
 
   return (
     <div>
@@ -60,6 +62,7 @@ const App = () => {
           <Route path={ROUTES.SINGIN} element={<SignIn />} />
           <Route path={ROUTES.SINGUP} element={<SignUp />} />
           <Route path={ROUTES.TEST} element={<PastTest />} />
+          <Route path={ROUTES.RESULTS} element={<Results />} />
         </Routes>
       )}
 
@@ -67,7 +70,7 @@ const App = () => {
         autoClose={2000}
         hideProgressBar={true}
         theme="colored"
-        position="top-right"
+        position="bottom-left"
       />
     </div>
   );

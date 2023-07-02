@@ -3,6 +3,7 @@ import { TbLetterQ } from "react-icons/tb";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
+import { getUserData } from "../auth/jwtService";
 
 const Sidebar = () => {
   return (
@@ -18,22 +19,26 @@ const Sidebar = () => {
               <TbLetterQ className="mt-1" size="20" />
               <span>Question Bank</span>
             </NavLink>
-            <NavLink
-              activeclassname="active"
-              to={ROUTES.MODULE}
-              className="flex my-2 w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
-            >
-              <MdOutlineCreateNewFolder className="mt-1" size="20" />
-              <span>Modul</span>
-            </NavLink>
-            <NavLink
-              activeclassname="active"
-              to={ROUTES.MODULETEST}
-              className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
-            >
-              <MdOutlineCreateNewFolder className="mt-1" size="20" />
-              <span>Test</span>
-            </NavLink>
+            {getUserData().role === "admin" && (
+              <>
+                <NavLink
+                  activeclassname="active"
+                  to={ROUTES.MODULE}
+                  className="flex my-2 w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+                >
+                  <MdOutlineCreateNewFolder className="mt-1" size="20" />
+                  <span>Modul</span>
+                </NavLink>
+                <NavLink
+                  activeclassname="active"
+                  to={ROUTES.MODULETEST}
+                  className="flex w-10/12 items-center gap-5 py-2.5 px-4 rounded-r transition duration-200 hover:bg-primary/10"
+                >
+                  <MdOutlineCreateNewFolder className="mt-1" size="20" />
+                  <span>Test</span>
+                </NavLink>
+              </>
+            )}
           </li>
         </ul>
       </nav>

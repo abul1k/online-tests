@@ -8,5 +8,6 @@ export const ROUTES = {
   CREATEMODULETEST: "/create-module-test/:id",
   CUSTOMTEST: "/create-custom-test",
   TEST: "/test",
+  RESULTS: "/test-results",
   NOTFOUND: "*",
 };
