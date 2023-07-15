@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 const PastTest = () => {
-  const { testList, isFilled } = useSelector(({ pastTest }) => pastTest);
+  const { testList } = useSelector(({ pastTest }) => pastTest);
   const dispatch = useDispatch();
 
   const changeTest = (id, test_id) => {
