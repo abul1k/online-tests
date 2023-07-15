@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { startTest } from "../features/pastTest/pastTestSlice";
 import { useEffect } from "react";
 import { getModules } from "../features/modules/moduleSlice";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const CreateCustomTest = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const CreateCustomTest = () => {
   const [isTimer, setIsTimer] = useState(false);
 
   const [checkedItems, setCheckedItems] = useState([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleCheckboxChange = (event) => {
     const name = event.target.name;
@@ -32,11 +34,20 @@ const CreateCustomTest = () => {
       (key) => checkedItems[key]
     );
 
-    dispatch(
-      startTest({ modul_ids: selectedModules, timer: isTimer, tutor: isTutor })
-    ).then(() => {
-      navigate(ROUTES.TEST);
-    });
+    if (selectedModules.length > 0) {
+      dispatch(
+        startTest({
+          modul_ids: selectedModules,
+          timer: isTimer,
+          tutor: isTutor,
+        })
+      ).then(() => {
+        navigate(ROUTES.TEST);
+        setIsSubmitted(false);
+      });
+    }
+
+    setIsSubmitted(true);
   };
 
   useEffect(() => {
@@ -96,9 +107,24 @@ const CreateCustomTest = () => {
         ))}
       </div>
       <hr />
-      <button className="btn-primary mt-10" onClick={pastTest}>
-        Start Test
-      </button>
+      {isSubmitted ? (
+        <button
+          type="button"
+          disabled
+          className="btn-primary flex gap-3 items-center justify-between mt-10"
+        >
+          <AiOutlineLoading3Quarters className="animate-spin" />
+          Processing...
+        </button>
+      ) : (
+        <button
+          className="btn-primary mt-10"
+          onClick={pastTest}
+          disabled={checkedItems.length === 0}
+        >
+          Start Test
+        </button>
+      )}
     </div>
   );
 };

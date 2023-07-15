@@ -45,6 +45,7 @@ const CreateModuleTest = () => {
     id: null,
     modul_id: null,
     image: null,
+    image2: null,
     question: "",
     correct_answer: "",
     correct_answer_key: "",
@@ -54,7 +55,9 @@ const CreateModuleTest = () => {
   });
 
   const [isUploaded, setIsUploaded] = useState(false);
+  const [isUploaded2, setIsUploaded2] = useState(false);
   const [imageName, setImageName] = useState("");
+  const [imageName2, setImageName2] = useState("");
   const [showRequired, setShowRequired] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -88,6 +91,12 @@ const CreateModuleTest = () => {
     setData({ ...data, image: files[0] });
   };
 
+  const uploadSecondImage = ({ target: { files } }) => {
+    setImageName2(files[0].name);
+    setIsUploaded2(true);
+    setData({ ...data, image2: files[0] });
+  };
+
   // api
   const saveDatas = (e) => {
     e.preventDefault();
@@ -118,6 +127,7 @@ const CreateModuleTest = () => {
       formData.append("correct_answer_key", data.correct_answer_key);
       formData.append("options", JSON.stringify(data.options));
       formData.append("image", data.image);
+      formData.append("image2", data.image2);
       if (Number(id)) {
         dispatch(updateTest(formData)).then(() => {
           navigate("/module-test");
@@ -141,6 +151,7 @@ const CreateModuleTest = () => {
     correct_answer,
     correct_answer_key,
     image,
+    image2,
     modul_id,
     question,
     modul_name,
@@ -152,6 +163,7 @@ const CreateModuleTest = () => {
       correct_answer,
       correct_answer_key,
       image,
+      image2,
       modul_id,
       question,
       modul_name,
@@ -170,12 +182,14 @@ const CreateModuleTest = () => {
             payload.correct_answer,
             payload.correct_answer_key,
             payload.image,
+            payload.image2,
             payload.modul,
             payload.question,
             payload.modul_name,
             payload.modul_unique_name
           );
           setImageName(payload.image_name);
+          setImageName2(payload.image2_name);
         }
       });
     }
@@ -261,7 +275,7 @@ const CreateModuleTest = () => {
         <div className="w-1/2">
           <label htmlFor="testQuestion">Test question</label>
           <JoditEditor
-            className="mt-1"
+            className="mt-1 mb-3"
             ref={editor}
             value={data.question}
             onChange={(newContent) => {
@@ -272,6 +286,20 @@ const CreateModuleTest = () => {
           <p className="text-danger">
             {showRequired && !data.question ? "required field" : ""}
           </p>
+
+          <label htmlFor="fileUpload" className="mt-3 ">
+            Image
+            <input
+              id="fileUpload"
+              type="file"
+              className="form-file-input"
+              onChange={uploadSecondImage}
+            />
+          </label>
+
+          <span className="bg-primary text-white py-1 px-3 mt-2 inline-block rounded">
+            {isUploaded2 ? imageName2 : imageName2 || "No photo"}
+          </span>
         </div>
       </div>
 
