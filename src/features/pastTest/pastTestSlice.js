@@ -36,6 +36,25 @@ export const getExactTest = createAsyncThunk(
       const res = await $axios.get(`test/test_result/get_detail_test/`, {
         params,
       });
+      localStorage.setItem("exactTestID", JSON.stringify(res.data.id));
+
+      return res.data;
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const submitTheAnswer = createAsyncThunk(
+  "pastTest/startTest",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await $axios.patch(
+        `/test/test_result/${payload.id}/test_check/`,
+        payload
+      );
+      localStorage.setItem("testID", JSON.stringify(res.data.id));
       return res.data;
     } catch (err) {
       toast.error(err.message);

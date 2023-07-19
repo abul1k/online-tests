@@ -2,8 +2,8 @@ import { getAccessToken, logout } from "../auth/jwtService.js";
 import axios from "axios";
 
 const axiosIns = axios.create({
-  baseURL: "http://192.168.31.82:8000",
-  // baseURL: "http://139.59.79.103:3030",
+  // baseURL: "http://192.168.31.82:8000",
+  baseURL: "http://157.230.224.65:3030",
   timeout: 20000,
 
   headers: { Accept: "application/json" },
