@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../Routes/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { startTest } from "../features/pastTest/pastTestSlice";
+import {setTestIdRedux, startTest, setExactTestID} from "../features/pastTest/pastTestSlice";
 import { useEffect } from "react";
 import { getModules } from "../features/modules/moduleSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import {setSelectionRange} from "@testing-library/user-event/dist/utils";
 
 const CreateCustomTest = () => {
   const navigate = useNavigate();
 
+  const {answer} = useSelector(({pastTest}) => pastTest)
   const { moduleList } = useSelector(({ module }) => module);
   const dispatch = useDispatch();
 
